@@ -17,22 +17,20 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"time"
 )
 
 // replayCmd represents the replay command
 var replayCmd = &cobra.Command{
-	Use:   "replay",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Args: cobra.MinimumNArgs(1),
+	Use:   "replay [file to replay]",
+	Short: "replay a set of log files",
+	Long: `replay a set of log files at a speed of your choice`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("replay called")
+		times, _ := cmd.Flags().GetInt("speed")
+		target, _ := cmd.Flags().GetString("target.folder")
+		replayLog(args[0],times, target)
 	},
 }
 
@@ -43,9 +41,18 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// replayCmd.PersistentFlags().String("foo", "", "A help for foo")
-
+	replayCmd.PersistentFlags().Int("speed", 1, "set the speed at which the log will be replayed")
+	replayCmd.PersistentFlags().String("target.folder", "", "target folder to replay to")
+	rootCmd.MarkPersistentFlagRequired("target.folder")
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// replayCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func replayLog(file string, speed int, target string){
+
+	timeRun := time.Time{}
+
+	fmt.Println(timeRun.Unix())
+	fmt.Println(file,speed, target)
 }
