@@ -70,6 +70,7 @@ func replayLog(filename string, speed int, target string) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		match := re.FindStringSubmatch(line)
+		fmt.Println(line)
 		if len(match) > 0 {
 			foundTs, _ := strconv.Atoi(match[1])
 
@@ -84,7 +85,6 @@ func replayLog(filename string, speed int, target string) {
 			}
 
 		}
-		fmt.Println(line)
 
 	}
 
